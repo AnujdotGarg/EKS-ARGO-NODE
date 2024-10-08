@@ -4,14 +4,14 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('049e6933-5ee8-4513-a9cd-c4d8308ffa3c')
         GIT_REPO_URL = 'git@github.com:AnujdotGarg/EKS-ARGO-NODE.git'
-        GIT_CREDENTIALS = credentials('GITHUB_ACCESS')
+        #GIT_CREDENTIALS = credentials('GITHUB_ACCESS')
 
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git url: "${env.GIT_REPO_URL}", credentialsId: "${env.GIT_CREDENTIALS}"
+                git url: "${env.GIT_REPO_URL}"
             }
         }
 
