@@ -36,10 +36,8 @@ pipeline {
     }
 
     post {
-        always {
-            script {
+        cleanup {
                 cleanWs()
             }
-        }
     }
 }
