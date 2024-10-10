@@ -4,7 +4,7 @@ pipeline {
 
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('Dockerhub-creds')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         GIT_REPO_URL = 'https://github.com/AnujdotGarg/EKS-ARGO-NODE.git'
         IMAGE_NAME = 'anujgarg01/eks-argo'
     }
