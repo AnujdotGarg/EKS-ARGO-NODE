@@ -2,35 +2,40 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('049e6933-5ee8-4513-a9cd-c4d8308ffa3c')
-        GIT_REPO_URL = 'git@github.com:AnujdotGarg/EKS-ARGO-NODE.git'
-
+        DOCKERHUB_CREDENTIALS = credentials('Dockerhub-creds')
+        GIT_REPO_URL = 'https://github.com/AnujdotGarg/EKS-ARGO-NODE.git'
+        IMAGE_NAME = 'anujgarg01/eks-argo'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git (url: "${env.GIT_REPO_URL}" )
+                git (branch: "main", 
+                url: "${env.GIT_REPO_URL}" )
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("docker push anujgarg01/eks-argo:$BUILD_NUMBER")
-                }
+                sh "docker build -t $IMAGE_NAME:$BUILD_NUMBER ."
             }
         }
 
-        stage('Push Docker Image to DockerHub') {
+        stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${env.DOCKERHUB_CREDENTIALS}") {
-                        dockerImage.push('$BUILD_NUMBER')
-                    }
-                }
+                sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
+                sh "docker push $IMAGE_NAME:$BUILD_NUMBER"
             }
         }
-
     }
 }
+
+    
+
