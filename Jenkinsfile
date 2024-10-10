@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/AnujdotGarg/EKS-ARGO-NODE.git'
+                git clone -b main --single-branch 'https://github.com/AnujdotGarg/EKS-ARGO-NODE.git'
             }
         }
 
