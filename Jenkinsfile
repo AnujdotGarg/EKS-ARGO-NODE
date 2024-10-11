@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {nodejs "npm"}
 
-
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
         IMAGE_NAME = 'anujgarg01/eks-argo'
@@ -18,7 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("$IMAGE_NAME:latest")
+                    docker.build("$IMAGE_NAME:$BUILD_NUMBER")
                 }
             }
         }
@@ -26,8 +25,9 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
+                    
                     docker.withRegistry('https://index.docker.io/v1/', "$DOCKERHUB_CREDENTIALS") {
-                    docker.image("$DOCKER_IMAGE:latest").push()
+                    docker.image("$IMAGE_NAME:$BUILD_NUMBER").push()
                     }
                 }
             }
